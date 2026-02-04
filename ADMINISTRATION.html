@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Réseau - Sécurité Informatique</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --terminal-bg: #1e1e1e;
+            --terminal-text: #00ff00;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+            min-height: 200px;
+        }
+
+        .course-content p {
+            margin-bottom: 1rem;
+        }
+
+        .course-footer {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--primary-color);
+        }
+
+        .btn-accent {
+            background: var(--accent-color);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+        }
+
+        /* Cours page styles */
+        .course-page {
+            display: none;
+        }
+
+        .course-page.active {
+            display: block;
+        }
+
+        .back-btn {
+            margin-bottom: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .course-title {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .content-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .definition-box {
+            background: #e8f4fc;
+            border-left: 5px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .command-line {
+            background: var(--terminal-bg);
+            color: var(--terminal-text);
+            padding: 1.5rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .command-line .prompt {
+            color: #00aaff;
+        }
+
+        .exercise-box {
+            background: #f9f9f9;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: var(--transition);
+        }
+
+        .exercise-box:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-header h4 {
+            color: var(--primary-color);
+        }
+
+        .solution {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution.active {
+            display: block;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .keyword {
+            background-color: #ffeaa7;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .important-note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 2rem;
+        }
+
+        .nav-tab {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+            transition: var(--transition);
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .nav-tab.active {
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+            
+            .command-line {
+                font-size: 0.9rem;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cours Complet de Sécurité Réseau</h1>
+            <p class="subtitle">ACL, IDS/IPS et Pare-feu - Apprentissage interactif</p>
+        </header>
+
+        <!-- Page d'accueil avec les cours -->
+        <div id="home-page" class="course-page active">
+            <h2 class="course-title">Sélectionnez un cours</h2>
+            <div class="courses-grid">
+                <!-- Cours ACL -->
+                <div class="course-card" data-course="acl">
+                    <div class="course-header">
+                        <h3>COURS COMPLET SUR LES ACL</h3>
+                    </div>
+                    <div class="course-content">
+                        <p><strong>Access Control Lists</strong> - Les listes de contrôle d'accès sont des règles de filtrage utilisées sur les équipements réseau pour autoriser ou refuser le trafic selon certains critères.</p>
+                        <p>Ce cours couvre :</p>
+                        <ul>
+                            <li>Définition et fonctionnement des ACL</li>
+                            <li>ACL Standard et Étendue</li>
+                            <li>Masque générique (Wildcard Mask)</li>
+                            <li>Exercices pratiques avec correction</li>
+                        </ul>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-open-course" data-course="acl">Ouvrir ce cours</button>
+                    </div>
+                </div>
+
+                <!-- Cours IDS/IPS -->
+                <div class="course-card" data-course="ids-ips">
+                    <div class="course-header">
+                        <h3>IDS et IPS intégrés aux pare-feu</h3>
+                    </div>
+                    <div class="course-content">
+                        <p><strong>Intrusion Detection System & Intrusion Prevention System</strong> - Systèmes de détection et prévention d'intrusion pour faire face aux attaques sophistiquées.</p>
+                        <p>Ce cours couvre :</p>
+                        <ul>
+                            <li>Définitions IDS et IPS</li>
+                            <li>Méthodes de détection</li>
+                            <li>Intégration aux pare-feu</li>
+                            <li>Mise en œuvre pratique</li>
+                        </ul>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-open-course" data-course="ids-ips">Ouvrir ce cours</button>
+                    </div>
+                </div>
+
+                <!-- Cours Pare-feu -->
+                <div class="course-card" data-course="parefeu">
+                    <div class="course-header">
+                        <h3>Cours complet : Pare-feu</h3>
+                    </div>
+                    <div class="course-content">
+                        <p><strong>Pare-feu et principes de sécurité réseau</strong> - Dispositifs dédiés à la sécurité pour filtrer, inspecter, autoriser ou bloquer les flux réseau.</p>
+                        <p>Ce cours couvre :</p>
+                        <ul>
+                            <li>Types de pare-feu</li>
+                            <li>Principes de fonctionnement</li>
+                            <li>Création d'ACL sur un pare-feu</li>
+                            <li>Comparaison ACL vs Pare-feu</li>
+                        </ul>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-open-course" data-course="parefeu">Ouvrir ce cours</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page du cours ACL -->
+        <div id="acl-page" class="course-page">
+            <button class="btn back-btn" id="back-from-acl">← Retour aux cours</button>
+            <h2 class="course-title">COURS COMPLET SUR LES ACL (Access Control Lists)</h2>
+            
+            <!-- Onglets de navigation pour le cours ACL -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="intro">Introduction</button>
+                <button class="nav-tab" data-tab="definition">Définition</button>
+                <button class="nav-tab" data-tab="fonctionnement">Fonctionnement</button>
+                <button class="nav-tab" data-tab="types">Types d'ACL</button>
+                <button class="nav-tab" data-tab="exercices">Exercices</button>
+            </div>
+            
+            <!-- Contenu des onglets -->
+            <div class="tab-content active" data-tab="intro">
+                <div class="content-section">
+                    <h3>📚 Introduction à la sécurité réseau</h3>
+                    <p>La sécurité réseau vise à <span class="keyword">contrôler, filtrer et protéger les communications</span> entre différentes parties d'un réseau informatique.</p>
+                    <p>Elle repose sur plusieurs mécanismes complémentaires, dont les <span class="keyword">ACL (Access Control Lists)</span> sur les équipements réseau (routeurs, commutateurs L3) et les <span class="keyword">pare-feu (firewalls)</span> dédiés ou intégrés.</p>
+                    
+                    <div class="definition-box">
+                        <h4>Objectifs principaux :</h4>
+                        <ul>
+                            <li>Limiter l'accès aux ressources</li>
+                            <li>Réduire la surface d'attaque</li>
+                            <li>Bloquer les communications non autorisées</li>
+                            <li>Surveiller et tracer les flux réseau</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" data-tab="definition">
+                <div class="content-section">
+                    <h3>🔍 Définition des ACL</h3>
+                    <p>Une <span class="keyword">ACL (Access Control List)</span> est une <span class="keyword">liste de règles</span> utilisée sur un routeur ou un switch pour :</p>
+                    <ul>
+                        <li><span class="keyword">autoriser (permit)</span> ou</li>
+                        <li><span class="keyword">refuser (deny)</span> le trafic réseau selon certains critères.</li>
+                    </ul>
+                    <p>Une ACL agit comme un <span class="keyword">filtre de sécurité</span>.</p>
+                    
+                    <div class="definition-box">
+                        <h4>À quoi servent les ACL ?</h4>
+                        <ul>
+                            <li>Sécuriser le réseau</li>
+                            <li>Limiter l'accès à certaines ressources</li>
+                            <li>Filtrer le trafic entrant ou sortant</li>
+                            <li>Contrôler les flux réseau</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" data-tab="fonctionnement">
+                <div class="content-section">
+                    <h3>⚙️ Principe de fonctionnement des ACL</h3>
+                    <h4>Fonctionnement général</h4>
+                    <ol>
+                        <li>Le paquet arrive sur une interface</li>
+                        <li>Le routeur compare le paquet aux règles ACL <span class="keyword">de haut en bas</span></li>
+                        <li>Dès qu'une règle correspond :
+                            <ul>
+                                <li><span class="keyword">permit</span> → le paquet passe</li>
+                                <li><span class="keyword">deny</span> → le paquet est bloqué</li>
+                            </ul>
+                        </li>
+                        <li>Si aucune règle ne correspond → <span class="keyword">deny implicite</span></li>
+                    </ol>
+                    
+                    <div class="important-note">
+                        <h4>⚠️ Règle importante</h4>
+                        <p>Toute ACL se termine implicitement par : <span class="keyword">deny any</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" data-tab="types">
+                <div class="content-section">
+                    <h3>📊 Types d'ACL</h3>
+                    
+                    <h4>1. ACL Standard</h4>
+                    <ul>
+                        <li>Filtre <span class="keyword">uniquement l'adresse IP source</span></li>
+                        <li>Numéros : <span class="keyword">1 à 99</span> et <span class="keyword">1300 à 1999</span></li>
+                        <li>Placement : <span class="keyword">près de la destination</span></li>
+                    </ul>
+                    
+                    <div class="command-line">
+                        <span class="prompt">Routeur&gt;</span> access-list 10 permit 192.168.1.0 0.0.0.255<br>
+                        <span class="prompt">Routeur&gt;</span> access-list 10 deny any
+                    </div>
+                    
+                    <h4>2. ACL Étendue (Extended)</h4>
+                    <ul>
+                        <li>Filtre :
+                            <ul>
+                                <li>IP source</li>
+                                <li>IP destination</li>
+                                <li>Protocole (TCP, UDP, ICMP...)</li>
+                                <li>Ports (HTTP, FTP, SSH...)</li>
+                            </ul>
+                        </li>
+                        <li>Numéros : <span class="keyword">100 à 199</span> et <span class="keyword">2000 à 2699</span></li>
+                        <li>Placement : <span class="keyword">près de la source</span></li>
+                    </ul>
+                    
+                    <div class="command-line">
+                        <span class="prompt">Routeur&gt;</span> access-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 80<br>
+                        <span class="prompt">Routeur&gt;</span> access-list 100 deny ip any any
+                    </div>
+                    
+                    <h4>3. ACL Nominale (Named ACL)</h4>
+                    <ul>
+                        <li>Identique aux ACL standard ou étendues</li>
+                        <li>Plus lisible (nom au lieu de numéro)</li>
+                    </ul>
+                    
+                    <div class="command-line">
+                        <span class="prompt">Routeur&gt;</span> ip access-list extended FILTRAGE_WEB<br>
+                        <span class="prompt">Routeur&gt;</span> permit tcp 192.168.1.0 0.0.0.255 any eq 80<br>
+                        <span class="prompt">Routeur&gt;</span> deny ip any any
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" data-tab="exercices">
+                <div class="content-section">
+                    <h3>🧪 EXERCICES PRATIQUES SUR LES ACL (AVEC CORRECTION)</h3>
+                    
+                    <!-- Exercice 1 -->
+                    <div class="exercise-box">
+                        <div class="exercise-header">
+                            <h4>Exercice 1 -- ACL Standard</h4>
+                            <button class="btn btn-success btn-show-solution">Afficher la solution</button>
+                        </div>
+                        <p><strong>Objectif</strong></p>
+                        <ul>
+                            <li>Autoriser <span class="keyword">uniquement</span> le réseau 192.168.10.0/24</li>
+                            <li>Bloquer tous les autres réseaux</li>
+                            <li>Appliquer l'ACL sur l'interface <span class="keyword">G0/0 en entrée</span></li>
+                        </ul>
+                        
+                        <div class="solution">
+                            <p><strong>Solution :</strong></p>
+                            <div class="command-line">
+                                <span class="prompt">Routeur&gt;</span> access-list 1 permit 192.168.10.0 0.0.0.255<br>
+                                <span class="prompt">Routeur&gt;</span> access-list 1 deny any<br>
+                                <span class="prompt">Routeur&gt;</span> interface g0/0<br>
+                                <span class="prompt">Routeur&gt;</span> ip access-group 1 in
+                            </div>
+                            <p class="important-note">✔ Seule l'IP source est filtrée<br>✔ ACL standard → près de la destination</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Exercice 2 -->
+                    <div class="exercise-box">
+                        <div class="exercise-header">
+                            <h4>Exercice 2 -- ACL Étendue (Web uniquement)</h4>
+                            <button class="btn btn-success btn-show-solution">Afficher la solution</button>
+                        </div>
+                        <p><strong>Objectif</strong></p>
+                        <ul>
+                            <li>Le réseau 192.168.1.0/24 peut accéder au <span class="keyword">HTTP</span></li>
+                            <li>Interdire <span class="keyword">FTP</span></li>
+                            <li>Tout autre trafic est bloqué</li>
+                        </ul>
+                        
+                        <div class="solution">
+                            <p><strong>Solution :</strong></p>
+                            <div class="command-line">
+                                <span class="prompt">Routeur&gt;</span> access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80<br>
+                                <span class="prompt">Routeur&gt;</span> access-list 101 deny tcp 192.168.1.0 0.0.0.255 any eq 21<br>
+                                <span class="prompt">Routeur&gt;</span> access-list 101 deny ip any any<br>
+                                <span class="prompt">Routeur&gt;</span> interface g0/1<br>
+                                <span class="prompt">Routeur&gt;</span> ip access-group 101 in
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Exercice 3 -->
+                    <div class="exercise-box">
+                        <div class="exercise-header">
+                            <h4>Exercice 3 -- ACL Nominale</h4>
+                            <button class="btn btn-success btn-show-solution">Afficher la solution</button>
+                        </div>
+                        <p><strong>Objectif</strong></p>
+                        <ul>
+                            <li>Bloquer le ping (ICMP) vers le serveur 10.0.0.10</li>
+                            <li>Autoriser tout le reste</li>
+                        </ul>
+                        
+                        <div class="solution">
+                            <p><strong>Solution :</strong></p>
+                            <div class="command-line">
+                                <span class="prompt">Routeur&gt;</span> ip access-list extended BLOQUE_PING<br>
+                                <span class="prompt">Routeur&gt;</span> deny icmp any host 10.0.0.10<br>
+                                <span class="prompt">Routeur&gt;</span> permit ip any any<br>
+                                <span class="prompt">Routeur&gt;</span> interface g0/0<br>
+                                <span class="prompt">Routeur&gt;</span> ip access-group BLOQUE_PING in
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Exercice 4 -->
+                    <div class="exercise-box">
+                        <div class="exercise-header">
+                            <h4>Exercice 4 -- Analyse</h4>
+                            <button class="btn btn-success btn-show-solution">Afficher la solution</button>
+                        </div>
+                        <p><strong>Question</strong></p>
+                        <p>Que fait cette ACL ?</p>
+                        <div class="command-line">
+                            <span class="prompt">Routeur&gt;</span> access-list 120 deny ip any any<br>
+                            <span class="prompt">Routeur&gt;</span> access-list 120 permit tcp 192.168.1.0 0.0.0.255 any eq 80
+                        </div>
+                        
+                        <div class="solution">
+                            <p><strong>Réponse :</strong></p>
+                            <p><span class="keyword">Tout le trafic est bloqué</span></p>
+                            <p><strong>Pourquoi ?</strong></p>
+                            <p>Les ACL sont lues <span class="keyword">de haut en bas</span>. Le <span class="keyword">deny ip any any</span> bloque tout avant d'atteindre la règle permit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page du cours IDS/IPS -->
+        <div id="ids-ips-page" class="course-page">
+            <button class="btn back-btn" id="back-from-ids-ips">← Retour aux cours</button>
+            <h2 class="course-title">Module : Sécurité des réseaux - Chapitre : IDS et IPS intégrés aux pare-feu</h2>
+            
+            <div class="content-section">
+                <h3>📚 Introduction pédagogique</h3>
+                <p>Dans les architectures réseau modernes, le pare-feu ne se limite plus au simple filtrage de paquets. Il intègre désormais des mécanismes avancés de détection et de prévention des intrusions afin de faire face aux attaques de plus en plus sophistiquées.</p>
+                
+                <div class="definition-box">
+                    <h4>Objectifs pédagogiques :</h4>
+                    <ul>
+                        <li>Définir clairement les notions d'IDS et d'IPS</li>
+                        <li>Expliquer le rôle des IDS/IPS dans une architecture de sécurité réseau</li>
+                        <li>Décrire les principes de fonctionnement des IDS et IPS</li>
+                        <li>Comparer IDS et IPS, notamment lorsqu'ils sont intégrés à un pare-feu</li>
+                        <li>Comprendre les modes de détection utilisés</li>
+                        <li>Situer l'IDS/IPS dans une chaîne de défense globale</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>🔍 Définitions fondamentales</h3>
+                
+                <div class="exercise-box">
+                    <h4>IDS -- Intrusion Detection System</h4>
+                    <p>Un IDS (Système de Détection d'Intrusion) est un dispositif matériel ou logiciel chargé de <span class="keyword">surveiller le trafic réseau ou les activités d'un système</span>, afin de <span class="keyword">détecter des comportements suspects ou malveillants</span>.</p>
+                    <p>L'IDS <span class="keyword">n'agit pas directement sur le trafic</span> : il analyse, détecte et génère des alertes.</p>
+                </div>
+                
+                <div class="exercise-box">
+                    <h4>IPS -- Intrusion Prevention System</h4>
+                    <p>Un IPS (Système de Prévention d'Intrusion) est une évolution de l'IDS. En plus de la détection, il est capable de <span class="keyword">bloquer automatiquement</span> les attaques détectées.</p>
+                    <p>L'IPS est <span class="keyword">actif</span> : il analyse le trafic en temps réel et peut empêcher une attaque avant qu'elle n'atteigne sa cible.</p>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>⚙️ Méthodes de détection</h3>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Méthode</th>
+                            <th>Description</th>
+                            <th>Avantages</th>
+                            <th>Inconvénients</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Détection par signature</strong></td>
+                            <td>Basée sur des signatures connues d'attaques</td>
+                            <td>Très précise, peu de faux positifs</td>
+                            <td>Inefficace contre les attaques inconnues (zero-day)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Détection par anomalie</strong></td>
+                            <td>Basée sur le comportement normal du réseau</td>
+                            <td>Détection des attaques inconnues</td>
+                            <td>Faux positifs possibles, phase d'apprentissage nécessaire</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Détection par analyse d'état</strong></td>
+                            <td>Analyse des sessions complètes, comprend le contexte</td>
+                            <td>Très efficace pour les attaques complexes</td>
+                            <td>Plus gourmand en ressources</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="content-section">
+                <h3>📊 Comparaison IDS vs IPS</h3>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Critère</th>
+                            <th>IDS</th>
+                            <th>IPS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Mode</strong></td>
+                            <td>Passif</td>
+                            <td>Actif</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Blocage</strong></td>
+                            <td>Non</td>
+                            <td>Oui</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Risque</strong></td>
+                            <td>Aucun impact trafic</td>
+                            <td>Risque de faux blocage</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Position</strong></td>
+                            <td>Hors bande</td>
+                            <td>En ligne</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usage</strong></td>
+                            <td>Surveillance</td>
+                            <td>Protection active</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page du cours Pare-feu -->
+        <div id="parefeu-page" class="course-page">
+            <button class="btn back-btn" id="back-from-parefeu">← Retour aux cours</button>
+            <h2 class="course-title">Cours complet : pare-feu et principes de sécurité réseau</h2>
+            
+            <div class="content-section">
+                <h3>📊 Comparaison ACL vs Pare-feu</h3>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Critère</th>
+                            <th>ACL</th>
+                            <th>Pare-feu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>État des connexions</strong></td>
+                            <td>Non</td>
+                            <td>Oui</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Analyse applicative</strong></td>
+                            <td>Non</td>
+                            <td>Oui</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IDS/IPS</strong></td>
+                            <td>Non</td>
+                            <td>Oui</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NAT/VPN</strong></td>
+                            <td>Non</td>
+                            <td>Oui</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Journalisation</strong></td>
+                            <td>Limitée</td>
+                            <td>Avancée</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Position</strong></td>
+                            <td>Routeur</td>
+                            <td>Point stratégique</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="content-section">
+                <h3>⚙️ Principes de fonctionnement d'un pare-feu</h3>
+                
+                <div class="exercise-box">
+                    <h4>a) Pare-feu à filtrage de paquets (stateless)</h4>
+                    <ul>
+                        <li>Analyse les en-têtes réseau</li>
+                        <li>Similaire aux ACL</li>
+                        <li>Analyse : IP source/destination, protocole, ports</li>
+                    </ul>
+                </div>
+                
+                <div class="exercise-box">
+                    <h4>b) Pare-feu à inspection avec état (stateful)</h4>
+                    <ul>
+                        <li>Suit l'état des connexions</li>
+                        <li>Autorise automatiquement le trafic de retour</li>
+                        <li>Analyse : tables d'état, sessions TCP/UDP</li>
+                    </ul>
+                </div>
+                
+                <div class="exercise-box">
+                    <h4>c) Pare-feu applicatif (Layer 7)</h4>
+                    <ul>
+                        <li>Analyse le contenu applicatif</li>
+                        <li>Analyse : HTTP, HTTPS, FTP, DNS, SMTP</li>
+                        <li>Analyse : méthodes, URL, payload</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>🔧 Création d'ACL sur pfSense (méthode concrète)</h3>
+                
+                <h4>4.2 Créer une règle (ACL)</h4>
+                <ol>
+                    <li>Cliquer sur <span class="keyword">Add (↑ ou ↓)</span></li>
+                    <li>Paramétrer la règle :
+                        <ul>
+                            <li><strong>Action</strong> : Pass → autoriser, Block → bloquer, Reject → bloquer + message ICMP</li>
+                            <li><strong>Interface</strong> : Ex : LAN</li>
+                            <li><strong>Protocol</strong> : TCP, UDP, TCP/UDP, ICMP</li>
+                            <li><strong>Source</strong> : LAN net, Adresse IP, Alias</li>
+                            <li><strong>Destination</strong> : Any, IP précise, Alias</li>
+                            <li><strong>Port</strong> (si TCP/UDP) : Destination port : 80 (HTTP), 443 (HTTPS)</li>
+                            <li><strong>Description</strong> : Toujours renseigner (bonne pratique)</li>
+                        </ul>
+                    </li>
+                    <li>Cliquer sur <span class="keyword">Save</span></li>
+                    <li>Cliquer sur <span class="keyword">Apply Changes</span></li>
+                </ol>
+                
+                <div class="important-note">
+                    <h4>⚠️ Ordre des ACL (très important)</h4>
+                    <p>Les règles sont évaluées <span class="keyword">de haut en bas</span>. Première règle correspondante appliquée.</p>
+                    <p>Exemple d'ordre :</p>
+                    <ol>
+                        <li>Block Facebook</li>
+                        <li>Block DNS externe</li>
+                        <li>Allow LAN to any</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Cours de Sécurité Réseau - ACL, IDS/IPS et Pare-feu</p>
+            <p>© 2023 - Conçu pour un apprentissage interactif et visuel</p>
+        </footer>
+    </div>
+
+    <script>
+        // Gestion de la navigation entre les pages
+        document.addEventListener('DOMContentLoaded', function() {
+            // Éléments DOM
+            const homePage = document.getElementById('home-page');
+            const aclPage = document.getElementById('acl-page');
+            const idsIpsPage = document.getElementById('ids-ips-page');
+            const parefeuPage = document.getElementById('parefeu-page');
+            
+            // Boutons pour ouvrir les cours
+            const openCourseButtons = document.querySelectorAll('.btn-open-course');
+            
+            // Boutons de retour
+            const backFromAcl = document.getElementById('back-from-acl');
+            const backFromIdsIps = document.getElementById('back-from-ids-ips');
+            const backFromParefeu = document.getElementById('back-from-parefeu');
+            
+            // Onglets pour le cours ACL
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Boutons pour afficher les solutions des exercices
+            const showSolutionButtons = document.querySelectorAll('.btn-show-solution');
+            
+            // Fonction pour afficher une page et masquer les autres
+            function showPage(pageToShow) {
+                // Masquer toutes les pages
+                homePage.classList.remove('active');
+                aclPage.classList.remove('active');
+                idsIpsPage.classList.remove('active');
+                parefeuPage.classList.remove('active');
+                
+                // Afficher la page demandée
+                pageToShow.classList.add('active');
+            }
+            
+            // Gestion des clics sur les boutons d'ouverture de cours
+            openCourseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const course = this.getAttribute('data-course');
+                    
+                    switch(course) {
+                        case 'acl':
+                            showPage(aclPage);
+                            break;
+                        case 'ids-ips':
+                            showPage(idsIpsPage);
+                            break;
+                        case 'parefeu':
+                            showPage(parefeuPage);
+                            break;
+                    }
+                });
+            });
+            
+            // Gestion des boutons de retour
+            backFromAcl.addEventListener('click', () => showPage(homePage));
+            backFromIdsIps.addEventListener('click', () => showPage(homePage));
+            backFromParefeu.addEventListener('click', () => showPage(homePage));
+            
+            // Gestion des onglets du cours ACL
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Désactiver tous les onglets
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Activer l'onglet cliqué
+                    this.classList.add('active');
+                    
+                    // Afficher le contenu correspondant
+                    const tabContent = document.querySelector(`.tab-content[data-tab="${tabId}"]`);
+                    if (tabContent) {
+                        tabContent.classList.add('active');
+                    }
+                });
+            });
+            
+            // Gestion des boutons pour afficher les solutions
+            showSolutionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const solution = this.closest('.exercise-box').querySelector('.solution');
+                    const isActive = solution.classList.contains('active');
+                    
+                    // Basculer l'affichage de la solution
+                    if (isActive) {
+                        solution.classList.remove('active');
+                        this.textContent = 'Afficher la solution';
+                    } else {
+                        solution.classList.add('active');
+                        this.textContent = 'Masquer la solution';
+                    }
+                });
+            });
+            
+            // Animation pour les cartes de cours
+            const courseCards = document.querySelectorAll('.course-card');
+            courseCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Simulation de terminal pour les lignes de commande
+            const commandLines = document.querySelectorAll('.command-line');
+            commandLines.forEach(line => {
+                // Ajouter un effet de clignotement au prompt
+                const prompts = line.querySelectorAll('.prompt');
+                prompts.forEach(prompt => {
+                    prompt.innerHTML = prompt.textContent + '<span class="cursor">█</span>';
+                });
+            });
+            
+            // Ajouter du CSS pour le curseur clignotant
+            const style = document.createElement('style');
+            style.textContent = `
+                .cursor {
+                    animation: blink 1s infinite;
+                    color: var(--terminal-text);
+                }
+                
+                @keyframes blink {
+                    0%, 50% { opacity: 1; }
+                    51%, 100% { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
